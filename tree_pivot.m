@@ -3,9 +3,9 @@ function [theta,vel,accel] = tree_pivot(l,m,I,stop)
 %attached at base
 %   Detailed explanation goes here
 g=9.81;
-t=linspace(0,stop,stop*20);
-f = @(x) ((m.*g.*l.*sin(x))./I);
-h=0.05;
+t=linspace(0,stop,stop*10);
+f = @(x) ((m.*g.*l.*sin(x))./(2.*I));
+h=0.1;
 figure;
 theta_curr=pi/24;
 theta=[theta_curr];
