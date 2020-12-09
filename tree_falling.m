@@ -42,10 +42,10 @@ yt = yc + (l./2).*cos(phi);
 %% Pivot 2: Electric Boogaloo
 
 stp=find(yb<=-1,1,'first')-1;
-angv = sqrt(vx(stp).^2 + vy(stp).^2).*cos(phi(stp)-atan(vx(stp)./vy(stp)));
+angv = (sqrt(vx(stp).^2 + vy(stp).^2).*cos(phi(stp)-atan(vx(stp)./vy(stp))))./(l./2);
 init2 = [phi(stp);angv+vphi(stp)];
 
-[theta2,vel2,accel2]=tree_pivot_ode(info,init2,0.3,50);
+[theta2,vel2,accel2]=tree_pivot_ode(info,init2,0.75,50);
 
 base2=[zeros(length(theta2),1)+xb(stp),zeros(length(theta2),1)+yb(stp)];
 top2=[(l).*sin(theta2)+base2(:,1),(l).*cos(theta2)+yb(stp)];
@@ -61,22 +61,28 @@ for i=1:length(theta)
     plot([base(i,1),top(i,1)],[base(i,2),top(i,2)],'-')
     hold off
     axis([-1.5,20,-1.5,20])
+    axis equal
     
-    M = [M,getframe];
-%     im = frame2im(M);
-%     [imind,cm] = rgb2ind(im,256);
-%     if i ==1
-%         imwrite(imind,cm,fn,'gif', 'Loopcount', inf, 'DelayTime',1./step_ps);
+%     if i==1
+%         M=getframe;
 %     else
-%         imwrite(imind,cm,fn,'gif','WriteMode','append', 'DelayTime',1./step_ps);
+%         M = [M,getframe];
 %     end
+    M=getframe;
+    im = frame2im(M);
+    [imind,cm] = rgb2ind(im,256);
+    if i ==1
+        imwrite(imind,cm,fn,'gif', 'Loopcount', inf, 'DelayTime',1./step_ps);
+    else
+        imwrite(imind,cm,fn,'gif','WriteMode','append', 'DelayTime',1./step_ps);
+    end
     
     pause(1./step_ps);
 end
 
 for i=1:len
     if yb(i) <= -1 || yt(i) <= -1
-        i
+        i;
         break
     end
     plot([0,0],[-1,0],'-',[-2,20],[-1,-1],'-')
@@ -84,11 +90,13 @@ for i=1:len
     plot([xb(i),xc(i),xt(i)],[yb(i),yc(i),yt(i)],'-')
     hold off
     axis([-1.5,20,-1.5,20])
+    axis equal
     
-    M = [M,getframe];
-%     im = frame2im(M);
-%     [imind,cm] = rgb2ind(im,256);
-%     imwrite(imind,cm,fn,'gif','WriteMode','append', 'DelayTime',1./step_ps);
+    %M = [M,getframe];
+    M=getframe;
+    im = frame2im(M);
+    [imind,cm] = rgb2ind(im,256);
+    imwrite(imind,cm,fn,'gif','WriteMode','append', 'DelayTime',1./step_ps);
     
     pause(1./step_ps);
 end
@@ -99,11 +107,13 @@ for i=1:length(theta2)
     plot([base2(i,1),top2(i,1)],[base2(i,2),top2(i,2)],'-')
     hold off
     axis([-1.5,20,-1.5,20])
+    axis equal
     
-    M = [M,getframe];
-%     im = frame2im(M);
-%     [imind,cm] = rgb2ind(im,256);
-%     imwrite(imind,cm,fn,'gif','WriteMode','append', 'DelayTime',1./step_ps);
+    %M = [M,getframe];
+    M=getframe;
+    im = frame2im(M);
+    [imind,cm] = rgb2ind(im,256);
+    imwrite(imind,cm,fn,'gif','WriteMode','append', 'DelayTime',1./step_ps);
     
     pause(1./step_ps);
     if theta2(i)==theta2(i+1)
@@ -111,7 +121,7 @@ for i=1:length(theta2)
     end
 end
 %%
-myVideo = VideoWriter('tree_fall'); %open video file
+myVideo = VideoWriter('tree_fall_3'); %open video file
 myVideo.FrameRate = 10;  %can adjust this, 5 - 10 works well for me
 open(myVideo)
 for i=M
