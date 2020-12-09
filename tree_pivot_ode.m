@@ -1,8 +1,8 @@
-function [theta,vel,accel] = tree_pivot_ode(info,init,stop)
+function [theta,vel,accel] = tree_pivot_ode(info,init,stop,step_ps)
 %TREE_PIVOT Models angle, velocity, and acceleration of tree falling, still
 %attached at base
 %   Detailed explanation goes here
-t=linspace(0,stop,stop*10);
+t=linspace(0,stop,stop*step_ps);
 
 [t,y]=ode45(@(t,y) rhs_tree(t,y,info),t,init);
 theta=y(:,1);
