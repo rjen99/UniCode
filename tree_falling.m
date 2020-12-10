@@ -5,14 +5,14 @@ I=(1/3)*m*(l^2);
 info=[l,m,I];
 
 step_ps=50;
-init=[pi./24;0];
+init=[pi./24;0];    % starts at small angle, 0 velocity
 
 %% Initial pivoting
-[theta,vel,accel]=tree_pivot_ode(info,init,2.5,50);
+[theta,vel,accel]=tree_pivot_ode(info,init,2.5,50); % stops after 2.5s, 50 steps per second
 
 % calculate positions
 base=[zeros(length(theta),1),zeros(length(theta),1)];
-com=[(l./2).*sin(theta)+base(:,1),(l./2).*cos(theta)];
+com=[(l./2).*sin(theta)+base(:,1),(l./2).*cos(theta)];  % com = centre of mass
 top=[(l).*sin(theta)+base(:,1),(l).*cos(theta)];
 %% Freefalling
 t=linspace(0,1,1.*step_ps)';
@@ -34,22 +34,31 @@ subplot(3,1,3)
 plot(t,phi,'-')
 %}
 
-%calculate positions
+%calculate positions        b=base, c=centre, t=top
 xb = xc - (l./2).*sin(phi);
 yb = yc - (l./2).*cos(phi);
 xt= xc + (l./2).*sin(phi);
 yt = yc + (l./2).*cos(phi);
-%% Pivot 2: Electric Boogaloo
+%% Pivot 2
 
-stp=find(yb<=-1,1,'first')-1;
+% finds first point that the base is lower than the ground level (-1) and saves the previous step
+stp=find(yb<=-1,1,'first')-1;       
 angv = (sqrt(vx(stp).^2 + vy(stp).^2).*cos(phi(stp)-atan(vx(stp)./vy(stp))))./(l./2);
 init2 = [phi(stp);angv+vphi(stp)];
 
+% uses the angle the tree was at when it 'hit the ground'
+% and the angular velocity + the tangential velocity converted to angular
+% velocity
 [theta2,vel2,accel2]=tree_pivot_ode(info,init2,0.75,50);
 
+% calculating positions again
 base2=[zeros(length(theta2),1)+xb(stp),zeros(length(theta2),1)+yb(stp)];
 top2=[(l).*sin(theta2)+base2(:,1),(l).*cos(theta2)+yb(stp)];
 %% Animation
+
+% getframe and 'im' lines are for saving the plot to videos, comment out if
+% not needed/wanted. 'im' lines and lines commented .gif are for gif, the
+% others are for .avi files and are commented that as well.
 
 fn = 'tree_fall.gif';
 
@@ -63,12 +72,13 @@ for i=1:length(theta)
     axis([-1.5,20,-1.5,20])
     axis equal
     
-%     if i==1
+%     if i==1           %.avi
 %         M=getframe;
 %     else
 %         M = [M,getframe];
 %     end
-    M=getframe;
+
+    M=getframe;     %.gif
     im = frame2im(M);
     [imind,cm] = rgb2ind(im,256);
     if i ==1
@@ -92,8 +102,9 @@ for i=1:len
     axis([-1.5,20,-1.5,20])
     axis equal
     
-    %M = [M,getframe];
-    M=getframe;
+    %M = [M,getframe];      %.avi
+    
+    M=getframe;             %.gif
     im = frame2im(M);
     [imind,cm] = rgb2ind(im,256);
     imwrite(imind,cm,fn,'gif','WriteMode','append', 'DelayTime',1./step_ps);
@@ -109,8 +120,9 @@ for i=1:length(theta2)
     axis([-1.5,20,-1.5,20])
     axis equal
     
-    %M = [M,getframe];
-    M=getframe;
+    %M = [M,getframe];      %.avi
+    
+    M=getframe;             %.gif
     im = frame2im(M);
     [imind,cm] = rgb2ind(im,256);
     imwrite(imind,cm,fn,'gif','WriteMode','append', 'DelayTime',1./step_ps);
@@ -120,7 +132,7 @@ for i=1:length(theta2)
         break
     end
 end
-%%
+%% save .avi file
 myVideo = VideoWriter('tree_fall_3'); %open video file
 myVideo.FrameRate = 10;  %can adjust this, 5 - 10 works well for me
 open(myVideo)

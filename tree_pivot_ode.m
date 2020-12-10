@@ -8,6 +8,7 @@ t=linspace(0,stop,stop*step_ps);
 theta=y(:,1);
 vel=y(:,2);
 
+%checking if the tree is horizontal and therefore fully fallen over
 vel(theta(:)>pi/2)=0;
 theta(theta(:)>pi/2)=pi/2;
 
