@@ -1,21 +1,23 @@
-l=16; %metre, 50ft
-m=15000; %kilogram, approx guess
+l=20; %metre, 50ft
+%m=15000; %kilogram, approx guess
+density=940;
+m=l.*density;
 g=9.81;
 I=(1/3)*m*(l^2);
 info=[l,m,I];
 
-step_ps=50;
+step_ps=200;
 init=[pi./24;0];    % starts at small angle, 0 velocity
 
 %% Initial pivoting
-[theta,vel,accel]=tree_pivot_ode(info,init,2.5,50); % stops after 2.5s, 50 steps per second
+[theta,vel,accel]=tree_pivot_ode(info,init,3.25,50); % stops after 2.5s, 50 steps per second
 
 % calculate positions
 base=[zeros(length(theta),1),zeros(length(theta),1)];
 com=[(l./2).*sin(theta)+base(:,1),(l./2).*cos(theta)];  % com = centre of mass
 top=[(l).*sin(theta)+base(:,1),(l).*cos(theta)];
 %% Freefalling
-t=linspace(0,1,1.*step_ps)';
+t=linspace(0,5,1.*step_ps)';
 len = length(t);
 
 [x_v,y_v,phi_v]=freefall(t,theta,vel,l./2);
@@ -49,11 +51,12 @@ init2 = [phi(stp);angv+vphi(stp)];
 % uses the angle the tree was at when it 'hit the ground'
 % and the angular velocity + the tangential velocity converted to angular
 % velocity
-[theta2,vel2,accel2]=tree_pivot_ode(info,init2,0.75,50);
+[theta2,vel2,accel2]=tree_pivot_ode(info,init2,5,50);
 
 % calculating positions again
 base2=[zeros(length(theta2),1)+xb(stp),zeros(length(theta2),1)+yb(stp)];
 top2=[(l).*sin(theta2)+base2(:,1),(l).*cos(theta2)+yb(stp)];
+
 %% Animation
 
 % getframe and 'im' lines are for saving the plot to videos, comment out if
@@ -67,9 +70,9 @@ figure;
 for i=1:length(theta)
     plot([0,0],[-1,0],'-',[-2,20],[-1,-1],'-')
     hold on
-    plot([base(i,1),top(i,1)],[base(i,2),top(i,2)],'-')
+    plot([base(i,1),top(i,1)],[base(i,2),top(i,2)],'r-')
     hold off
-    axis([-1.5,20,-1.5,20])
+    axis([-2,30,-2,30])
     axis equal
     
 %     if i==1           %.avi
@@ -89,7 +92,7 @@ for i=1:length(theta)
     
     pause(1./step_ps);
 end
-
+pause;
 for i=1:len
     if yb(i) <= -1 || yt(i) <= -1
         i;
@@ -97,9 +100,12 @@ for i=1:len
     end
     plot([0,0],[-1,0],'-',[-2,20],[-1,-1],'-')
     hold on
-    plot([xb(i),xc(i),xt(i)],[yb(i),yc(i),yt(i)],'-')
+    plot([xb(i),xc(i),xt(i)],[yb(i),yc(i),yt(i)],'r-')
+    title('Tree in free fall')
+    xlabel('x (m)')
+    ylabel('y (m)')
     hold off
-    axis([-1.5,20,-1.5,20])
+    axis([-2,30,-2,30])
     axis equal
     
     %M = [M,getframe];      %.avi
@@ -109,15 +115,15 @@ for i=1:len
     [imind,cm] = rgb2ind(im,256);
     imwrite(imind,cm,fn,'gif','WriteMode','append', 'DelayTime',1./step_ps);
     
-    pause(1./step_ps);
+    pause;%(1./step_ps);
 end
-
+pause;
 for i=1:length(theta2)
     plot([0,0],[-1,0],'-',[-2,20],[-1,-1],'-')
     hold on
-    plot([base2(i,1),top2(i,1)],[base2(i,2),top2(i,2)],'-')
+    plot([base2(i,1),top2(i,1)],[base2(i,2),top2(i,2)],'r-')
     hold off
-    axis([-1.5,20,-1.5,20])
+    axis([-2,30,-2,30])
     axis equal
     
     %M = [M,getframe];      %.avi
@@ -133,6 +139,7 @@ for i=1:length(theta2)
     end
 end
 %% save .avi file
+%{
 myVideo = VideoWriter('tree_fall_3'); %open video file
 myVideo.FrameRate = 10;  %can adjust this, 5 - 10 works well for me
 open(myVideo)
@@ -140,6 +147,7 @@ for i=M
     writeVideo(myVideo, i)
 end
 close(myVideo)
+%}
 %% Functions
 function [x_values,y_values,theta_values] = freefall(t,theta,vel,l)
     g=9.81;
