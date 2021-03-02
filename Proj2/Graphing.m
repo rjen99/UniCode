@@ -15,8 +15,8 @@ figure;
 for i=1:length(theta_1)
     polarplot([theta_1(i),theta_1(i),theta_2(i)],[base_1(i),base_2(i),end_2(i)],'-')
     %axis([-9,9,0,17])
-    pax=gca;
-    pax.ThetaDir = 'clockwise';
-    pax.ThetaZeroLocation = 'top';
-    pause(0.1)
+%     pax=gca;
+%     pax.ThetaDir = 'clockwise';
+%     pax.ThetaZeroLocation = 'top';
+    pause(1);
 end
