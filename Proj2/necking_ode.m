@@ -1,3 +1,5 @@
+%% Doesn't have any actual code
+
 % x = theta 1
 % y = theta 2
 %% Equations of motion
