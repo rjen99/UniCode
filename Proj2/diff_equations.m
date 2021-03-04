@@ -4,6 +4,7 @@
 % tau = a1(x,y)*x_dd + b1(x,y)*y_dd + c1(x,y)*y_d + d1(x,y);
 % tau = a2(x,y)*x_dd + b2(x,y)*y_dd + c2(x,y)*x_d + d2(x,y);
 
+% they dont actually need ran
 a1 = @(x,y) (3/4)*m*(l^2) + M*(l^2) + 2*I;     
 b1 = @(x,y) 0.5*m*(l^2)*cos(x-y) + 0.5*M*(l^2)*cos(x-y) + I;    
 c1 = @(x,y) 0.5*m*(l^2)*sin(x-y) + 0.5*M*(l^2)*sin(x-y);  
