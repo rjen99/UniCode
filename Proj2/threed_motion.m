@@ -19,7 +19,7 @@ for i=1:length(t)
     pause(0.01);
 end
 
-%% 3D
+%% 3D, plots angle, velocity, and kinetic energy graphs
 fun_theta_dd = -1;
 fun_theta_d = @(t) 3 - 6.*t;
 fun_theta = @(t) pi./6 + 3.*t - 3*(t.^2);
@@ -30,9 +30,14 @@ fun_phi = @(t) (4./3).*(t.^3);
 
 t = 0:0.01:1;
 l = 1.8;
+I = 57.82;
 
 theta = fun_theta(t');
+theta_d = fun_theta_d(t');
 phi = fun_phi(t');
+phi_d = fun_phi_d(t');
+
+KE = 0.5*I*theta_d + 0.5*I*phi_d;
 
 % plot phi & theta to check values against video
 figure;
@@ -40,8 +45,19 @@ plot(theta)
 hold on
 plot(phi)
 plot([0;100],[pi./2;pi./2])
+legend('\theta','\phi', '\pi/2')
+title('angle')
+figure;
+plot(theta_d)
+hold on
+plot(phi_d)
+legend('\theta_d','\phi_d')
+title('velocity')
+figure;
+plot(KE)
+title('kinetic energy')
 %pause;
-%%
+%% 3D, plots an animation of the movement from 3 views
 L_1 = l.*cos(theta);
 l_1 = l.*sin(theta);
 L_2 = l_1.*sin(phi);
