@@ -16,9 +16,9 @@ c2 = @(x,y) -0.5*(l^2)*sin(x-y)*(m + M);
 d2 = @(x,y) k*(y-x) - (3/2)*m*g*l*sin(y);
 
 %%
-z = [0.1,0.1,0,0];
-tau = 1;
-sol = ode45(@(t,x) rhs_ode(t,z,tau),[0,200],z);
+x0 = [0.1,0.1,0,0];
+tau = 750;
+sol = ode45(@(t,x) rhs_ode(t,x,tau),[0,1],x0);
 
 %%
 function dzdt = rhs_ode(t,z,tau)
@@ -27,8 +27,8 @@ m=120;
 M=32;
 l=1.8;
 g=9.81;
-I=10;
-k=1;
+I=57;
+k=100;
 
 a1 = @(x,y) (3/4)*m*(l^2) + M*(l^2) + 2*I;
 b1 = @(x,y) 0.5*m*(l^2)*cos(x-y) + 0.5*M*(l^2)*cos(x-y) + I;
