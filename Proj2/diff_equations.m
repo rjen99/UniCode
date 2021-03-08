@@ -16,19 +16,56 @@ c2 = @(x,y) -0.5*(l^2)*sin(x-y)*(m + M);
 d2 = @(x,y) k*(y-x) - (3/2)*m*g*l*sin(y);
 
 %%
-x0 = [0.1,0.1,0,0];
-tau = 750;
-sol = ode45(@(t,x) rhs_ode(t,x,tau),[0,1],x0);
+x0 = [0,0,0.5,0];
 
+all_y = [];
+all_t = [];
+l=1.6:0.05:2;
+for i = 1:length(l)
+    sol = ode45(@(t,x) rhs_ode(t,x,l(i)),t_span,x0);
+    t_span = linspace(0,sol.x(end),20);
+    %heck = deval(sol,t_span);
+    a=find(sol.y(1,:)<0.6);
+    y = sol.y(:,a);
+    t = sol.x(:,a);
+    
+    all_y = [all_y,y(:,end)];
+    all_t = [all_t,t(:,end)];
+end
+%{
+sol = ode45(@(t,x) rhs_ode(t,x,2),[0,1],x0);
+a=find(sol.y(1,:)<0.6);
+y = sol.y(:,a);
+t = sol.x(:,a);
+y(1,end)
+t(end)
+
+theta_1 = y(1,:);
+theta_2 = y(2,:);
+base_1 = zeros(length(theta_1));
+base_2 = ones(length(theta_1))*0.9;
+end_2 = ones(length(theta_1))*1.8;
+
+figure;
+for i=1:length(theta_1)
+    polarplot([theta_1(i),theta_1(i),theta_2(i)],[base_1(i),base_2(i),end_2(i)],'-')
+    %axis([-9,9,0,17])
+    pax=gca;
+    pax.ThetaDir = 'clockwise';
+    pax.ThetaZeroLocation = 'top';
+    M(i) = getframe;
+    pause(0.1);
+end
+%}
 %%
-function dzdt = rhs_ode(t,z,tau)
+function dzdt = rhs_ode(t,z,l)
 % Correct values need put in
+tau = 1000;
 m=120;
 M=32;
-l=1.8;
 g=9.81;
-I=57;
-k=100;
+I=0.5*m*((l./2)^2);
+k=200;
 
 a1 = @(x,y) (3/4)*m*(l^2) + M*(l^2) + 2*I;
 b1 = @(x,y) 0.5*m*(l^2)*cos(x-y) + 0.5*M*(l^2)*cos(x-y) + I;

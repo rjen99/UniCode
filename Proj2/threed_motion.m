@@ -37,7 +37,7 @@ theta_d = fun_theta_d(t');
 phi = fun_phi(t');
 phi_d = fun_phi_d(t');
 
-KE = 0.5*I*theta_d + 0.5*I*phi_d;
+KE = 0.5*I*(theta_d.^2) + 0.5*I*(phi_d.^2);
 
 % plot phi & theta to check values against video
 figure;
