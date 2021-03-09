@@ -1,2 +1,2 @@
 # UniCode
-Code various university things, eg MDM
+Code for various university modules, mainly MDM
