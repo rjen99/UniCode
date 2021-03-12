@@ -6,7 +6,7 @@ t1=ones(length(t));
 % polarplot(sol.x(i).*[1,1,1,1],sol.y(:,i),'o','LineWidth', 2)
 % hold on
 % end
-KE = 0.5*57*y(4,:);
+KE = (1./2).*67.*(1.8./2).*((1.8./2).^2).*(y(4,:).^2);
 % plots thetas and theta dots against time
 figure;
 plot(t,y(1,:),'LineWidth', 2)
@@ -30,7 +30,7 @@ figure;
 plot(t,KE,'LineWidth', 2)
 title('Kinetic Energy of upper neck segment')
 xlabel('Time (s)')
-ylabel('Kinetic Energy (N)')
+ylabel('Kinetic Energy (J)')
 %% Demonstrates the motion (should look like a double pendulum in action)
 % in theory this should play an animation
 theta_1 = sol.y(1,:);

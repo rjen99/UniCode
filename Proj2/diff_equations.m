@@ -16,25 +16,24 @@ c2 = @(x,y) -0.5*(l^2)*sin(x-y)*(m + M);
 d2 = @(x,y) k*(y-x) - (3/2)*m*g*l*sin(y);
 
 %%
-x0 = [0,0,0.5,0];
+x0 = [0,0,0,0];
 
 all_y = [];
 all_t = [];
 l=1.6:0.05:2;
-for i = 1:length(l)
-    sol = ode45(@(t,x) rhs_ode(t,x,l(i)),t_span,x0);
-    t_span = linspace(0,sol.x(end),20);
-    %heck = deval(sol,t_span);
-    a=find(sol.y(1,:)<0.6);
-    y = sol.y(:,a);
-    t = sol.x(:,a);
-    
-    all_y = [all_y,y(:,end)];
-    all_t = [all_t,t(:,end)];
-end
-%{
-sol = ode45(@(t,x) rhs_ode(t,x,2),[0,1],x0);
-a=find(sol.y(1,:)<0.6);
+% for i = 1:length(l)
+%     sol = ode45(@(t,x) rhs_ode(t,x,l(i)),[0,1],x0);
+%     
+%     a=find(sol.y(1,:)<0.5);
+%     y = sol.y(:,a);
+%     t = sol.x(:,a);
+%     
+%     all_y = [all_y,y(:,end)];
+%     all_t = [all_t,t(:,end)];
+% end
+
+sol = ode45(@(t,x) rhs_ode(t,x,1.8),[0,0.7],x0);
+a=find(sol.y(1,:)<0.5);
 y = sol.y(:,a);
 t = sol.x(:,a);
 y(1,end)
@@ -56,7 +55,7 @@ for i=1:length(theta_1)
     M(i) = getframe;
     pause(0.1);
 end
-%}
+
 %%
 function dzdt = rhs_ode(t,z,l)
 % Correct values need put in
