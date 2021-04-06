@@ -1,0 +1,15 @@
+bmi = stroke_features(:,6);
+non_nan = ~isnan(bmi);
+mean_bmi = mean(bmi(non_nan));
+true_non_nan = ~isnan(bmi(1:249));
+true_nan = isnan(bmi(1:249));
+false_non_nan = ~isnan(bmi(250:end));
+false_nan = isnan(bmi(250:end));
+f_bmi = bmi(250:end);
+true_mean_bmi = (mean(bmi(true_non_nan)));
+false_mean_bmi = (mean(f_bmi(false_non_nan)));
+bmi_fix_1 = bmi;
+bmi_fix_2 = bmi;
+bmi_fix_1(isnan(bmi_fix_1)) = mean_bmi;
+bmi_fix_2(true_nan) = true_mean_bmi;
+bmi_fix_2(false_nan) = false_mean_bmi;
