@@ -17,14 +17,12 @@ dataframe = read_csv('tr_stroke_labels.csv')
 train_labels = dataframe.values
 '''
 
-dataframe = read_csv('ts_short_features.csv')
-test_features = dataframe.values
-dataframe = read_csv('ts_short_labels.csv')
-test_labels = dataframe.values
-dataframe = read_csv('tr_short_features.csv')
-train_features = dataframe.values
-dataframe = read_csv('tr_short_labels.csv')
-train_labels = dataframe.values
+dataframe = read_csv('data\stroke_train_sampled.csv')
+test_features = dataframe.values[:,0:6]
+test_labels = dataframe.values[:,7]
+dataframe = read_csv('data\stroke_test_sampled.csv')
+train_features = dataframe.values[:,0:6]
+train_labels = dataframe.values[:,7]
 
 
 feature_names = {'gender':0,'age':1,'hypertension':2,'heart disease':3,'avg glucose level':4,'bmi':5}
