@@ -13,7 +13,7 @@ test = find(r>=0.7);
 stroke_train_all = stroke_all(train,:);
 stroke_test_all = stroke_all(test,:);
 
-stroke_sampled = [stroke_true_shuffled,stroke_false_sampled];
+stroke_sampled = [stroke_true_shuffled;stroke_false_sampled];
 r=rand(size(stroke_sampled,1),1);
 train = find(r<0.7);
 test = find(r>=0.7);

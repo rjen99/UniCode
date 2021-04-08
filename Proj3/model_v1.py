@@ -20,11 +20,12 @@ train_labels = dataframe.values
 dataframe = read_csv('data\stroke_train_sampled.csv')
 test_features = dataframe.values[:,0:6]
 test_labels = dataframe.values[:,7]
+print(test_labels)
 dataframe = read_csv('data\stroke_test_sampled.csv')
 train_features = dataframe.values[:,0:6]
 train_labels = dataframe.values[:,7]
 
-
+hki
 feature_names = {'gender':0,'age':1,'hypertension':2,'heart disease':3,'avg glucose level':4,'bmi':5}
 chosen_features = [1,4,5]
 test_features = test_features[:,chosen_features]
@@ -56,14 +57,14 @@ model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
-model.fit(train_features, train_labels, epochs=50, batch_size=64, validation_data=(test_features,test_labels))
+model.fit(train_features, train_labels, epochs=50, batch_size=32, validation_data=(test_features,test_labels))
 test_loss, test_acc = model.evaluate(test_features, test_labels, verbose=2)
 print('\nTest accuracy:', test_acc)
 predictions = model.predict(test_features)
 
 
-predictions = np.round(predictions[:,0])
-print([predictions,test_labels[:,0]])
+predictions = np.round(predictions[:])
+print([predictions,test_labels[:]])
 conf_mat = tf.math.confusion_matrix(test_labels, predictions, num_classes=None, weights=None, dtype=tf.dtypes.int32, name=None)
 
 print(conf_mat)
