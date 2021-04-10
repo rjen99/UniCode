@@ -18,16 +18,16 @@ train_labels = dataframe.values
 '''
 
 dataframe = read_csv('data\stroke_train_sampled.csv')
-test_features = dataframe.values[:,0:6]
+test_features = dataframe.values[:,0:7]
 test_labels = dataframe.values[:,7]
-print(test_labels)
+#print(test_features[0:4,:])
 dataframe = read_csv('data\stroke_test_sampled.csv')
-train_features = dataframe.values[:,0:6]
+train_features = dataframe.values[:,0:7]
 train_labels = dataframe.values[:,7]
 
 
-feature_names = {'gender':0,'age':1,'hypertension':2,'heart disease':3,'avg glucose level':4,'bmi':5}
-chosen_features = [1,4]
+feature_names = {'gender':0,'age':1,'hypertension':2,'heart disease':3,'avg glucose level':4,'bmi':5,'smokes':6}
+chosen_features = [1,4,5]
 test_features = test_features[:,chosen_features]
 train_features = train_features[:,chosen_features]
 print('heck')
@@ -48,7 +48,6 @@ print(len(test_features))
 print(len(test_labels))
 
 model = tf.keras.Sequential([
-    #tf.keras.layers.Dense(3, activation='relu'),
     tf.keras.layers.Dense(8, activation='relu'),
     tf.keras.layers.Dense(2, activation='softmax')
 ])
@@ -63,7 +62,7 @@ print('\nTest accuracy:', test_acc)
 predictions = model.predict(test_features)
 
 
-predictions = np.round(predictions[:,0])
+predictions = np.round(predictions[:,1])
 print([predictions,test_labels])
 conf_mat = tf.math.confusion_matrix(test_labels, predictions, num_classes=None, weights=None, dtype=tf.dtypes.int32, name=None)
 

@@ -1,7 +1,7 @@
 stroke_data_tab = healthcaredatasetstrokedata;
 
 smokes = find(stroke_data_tab.smoking_status=='smokes');
-f_smokes = find(stroke_data_tab.smoking_status=='formerly smoked');
+f_smokes = [find(stroke_data_tab.smoking_status=='formerly smoked'); find(stroke_data_tab.smoking_status=='Unknown')];
 n_smokes = find(stroke_data_tab.smoking_status=='never smoked');
 male = find(stroke_data_tab.gender=='Male');
 
