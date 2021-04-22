@@ -36,8 +36,11 @@ for i in range(no_loops):
     test_labels = np.asarray(test_labels)
     train_features = train[:,0:7]
     train_labels = train[:,7]
+
     #print(type(test_features))
     #print(type(train_features))
+
+    #np.random.shuffle(train_labels)     # for testing random labeling
 
 
     feature_names = {'gender':0,'age':1,'hypertension':2,'heart disease':3,'avg glucose level':4,'bmi':5,'smokes':6}
@@ -51,8 +54,6 @@ for i in range(no_loops):
 
     test_labels = test_labels.astype(int)
     train_labels = train_labels.astype(int)
-
-
     
 
     model.fit(train_features, train_labels, epochs=50, batch_size=32, verbose=0)#, validation_data=(test_features,test_labels))

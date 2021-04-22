@@ -1,14 +1,21 @@
+# Import scikit-learn dataset library
+from sklearn import datasets, svm, metrics
+from sklearn.model_selection import train_test_split
+from sklearn.impute import KNNImputer
+import pandas as pd
 import numpy as np
-from pandas import read_csv
-from sklearn.impute import SimpleImputer
+import matplotlib.pyplot as plt
 
-dataframe = read_csv('ts_short_features.csv')
-stroke_features = dataframe.values
-imputer = SimpleImputer(strategy='mean')
-imputer.fit(stroke_features)
-stroke_features_fix = imputer.transform(stroke_features)
-print(stroke_features_fix[2,:])
+# Load dataset
+dat = pd.read_csv(open("newdata.csv"), header=None, na_values='nan')
 
-sff = np.asarray(stroke_features_fix)
-np.savetxt("ts_short_features_fix.csv", sff, delimiter=",")
+# print(dat)
 
+
+data = dat.values
+
+imputer = KNNImputer()
+imputer.fit(data)
+Xtrans = imputer.transform(data)
+
+np.savetxt("impute.csv", Xtrans)
